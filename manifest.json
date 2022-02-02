@@ -1,0 +1,10 @@
+{
+  "name": "Test Slack 0",
+  "id": "1069611347431515690",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": [
+    "figma"
+  ],
+  "ui": "ui.html"
+}

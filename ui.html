@@ -1,0 +1,40 @@
+<h2>Versionneur VZéro</h2>
+<ul id="results">
+</ul>
+
+<script>
+  "use strict";
+  let choices = [];
+
+  onmessage = event => {
+    if (event.data.pluginMessage.type === "choices") {
+      choices = event.data.pluginMessage.choices;
+      updateUi()
+    }
+  }
+
+  function updateUi() {
+    let choiceButtons = []; 
+    choices?.forEach(value => {
+      console.log(value.characters);
+      choiceButtons.push(
+        `<li>
+          <button onclick="selectChoice('${value.characters}')">${value.characters}</button>
+        </li>`
+        )
+    })
+    document.getElementById('results').innerHTML = choiceButtons;
+  }
+
+  function selectChoice(title) {
+    const slackUrl = 'https://hooks.slack.com/workflows/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';
+    parent.postMessage({
+      pluginMessage: { action: "select", value: title}
+    });
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("POST", slackUrl, false );
+    xmlHttp.send(JSON.stringify({title}));
+    console.log(xmlHttp.responseText);
+  }
+
+</script>
