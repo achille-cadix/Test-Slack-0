@@ -6,7 +6,7 @@
 // This shows the HTML page in "ui.html".
 figma.showUI(__html__);
 const choices = seachForTitles();
-figma.ui.postMessage({ type: "choices", choices });
+figma.ui.postMessage({ type: "choices", choices, userName: figma.currentUser.name });
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.

@@ -1,14 +1,17 @@
-<h2>Versionneur VZéro</h2>
+<h2>Notificateur VZéro</h2>
+<h4>Indiquez la maquette updatée</h4>
 <ul id="results">
 </ul>
 
 <script>
   "use strict";
   let choices = [];
+  let userName = "";
 
   onmessage = event => {
     if (event.data.pluginMessage.type === "choices") {
       choices = event.data.pluginMessage.choices;
+      userName = event.data.pluginMessage.userName;
       updateUi()
     }
   }
@@ -31,9 +34,13 @@
     parent.postMessage({
       pluginMessage: { action: "select", value: title}
     });
+    const body = {
+      title,
+      userName
+    }
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("POST", slackUrl, false );
-    xmlHttp.send(JSON.stringify({title}));
+    xmlHttp.send(JSON.stringify(body));
     console.log(xmlHttp.responseText);
   }
 

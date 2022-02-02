@@ -6,5 +6,9 @@
   "editorType": [
     "figma"
   ],
+  "permissions": [
+    "currentuser",
+    "activeusers"
+  ],
   "ui": "ui.html"
 }
