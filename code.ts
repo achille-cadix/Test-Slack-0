@@ -1,7 +1,6 @@
 figma.showUI(__html__);
 
-const choices = seachForTitles();
-figma.ui.postMessage({type: "choices", choices, userName: figma.currentUser.name})
+seachForTitles();
 
 figma.ui.onmessage = msg => {
   console.log(msg)
@@ -15,18 +14,29 @@ figma.ui.onmessage = msg => {
   figma.closePlugin();
 };
 
-function seachForTitles(): string[] {
+async function seachForTitles(): Promise<void> {
   const choices: string[] = [];
-  let bannerNodes: InstanceNode[] = figma.currentPage.selection as InstanceNode[];
-  for (let bannerNode of bannerNodes) {
-    if (bannerNode?.children){
-      for (let textNode of bannerNode?.children) {
-        if (textNode.name === 'Nom de la feature') {
-          let characters: string = textNode["characters"];
-          choices.push(characters);
-        }
-     }
+  const userName: string = figma.currentUser.name;
+  const date = new Date().toLocaleDateString();
+  let bannerNode: InstanceNode[] = figma.currentPage.selection as InstanceNode[];
+  if(bannerNode.length !== 1) {
+    figma.notify("Veuillez selectionner une seule et unique bannière");
+    figma.closePlugin();
+    return;
+  }
+  else if (bannerNode[0]?.children){
+    for (let textNode of bannerNode[0]?.children) {
+      if (textNode.name === 'Nom de la feature') {
+        let characters: string = textNode["characters"];
+        choices.push(characters);
+      }
+      if (textNode.name === 'Nom le jj Mois') {
+        await figma.loadFontAsync({ family: "Open Sans", style: "Bold" });
+        await figma.loadFontAsync({ family: "Open Sans", style: "Regular" });
+        textNode["characters"] = `Mis à jour par ${userName} le ${date}`;
+      }
     }
   }
-  return choices;
+  figma.ui.postMessage({type: "choices", choices, userName})
+  return;
 }

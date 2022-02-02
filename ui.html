@@ -1,7 +1,5 @@
 <h2>Notificateur VZéro</h2>
-<h4>Indiquez la maquette updatée</h4>
-<ul id="results">
-</ul>
+<h4>Le message a été envoyé</h4>
 
 <script>
   "use strict";
@@ -13,23 +11,11 @@
       choices = event.data.pluginMessage.choices;
       if (choices.length === 1) {
         selectChoice(choices[0]);
-        alert("message envoyé")
+        parent.closePlugin();
       }
       userName = event.data.pluginMessage.userName;
       updateUi()
     }
-  }
-
-  function updateUi() {
-    let choiceButtons = []; 
-    choices?.forEach(choice => {
-      choiceButtons.push(
-        `<li>
-          <button onclick="selectChoice('${choice}')">${choice}</button>
-        </li>`
-        )
-    })
-    document.getElementById('results').innerHTML = choiceButtons;
   }
 
   function selectChoice(title) {
