@@ -11,6 +11,10 @@
   onmessage = event => {
     if (event.data.pluginMessage.type === "choices") {
       choices = event.data.pluginMessage.choices;
+      if (choices.length === 1) {
+        selectChoice(choices[0]);
+        alert("message envoyé")
+      }
       userName = event.data.pluginMessage.userName;
       updateUi()
     }
@@ -18,11 +22,10 @@
 
   function updateUi() {
     let choiceButtons = []; 
-    choices?.forEach(value => {
-      console.log(value.characters);
+    choices?.forEach(choice => {
       choiceButtons.push(
         `<li>
-          <button onclick="selectChoice('${value.characters}')">${value.characters}</button>
+          <button onclick="selectChoice('${choice}')">${choice}</button>
         </li>`
         )
     })

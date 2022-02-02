@@ -1,26 +1,10 @@
-// This plugin will open a window to prompt the user to enter a number, and
-// it will then create that many rectangles on the screen.
-
-// This file holds the main code for the plugins. It has access to the *document*.
-// You can access browser APIs in the <script> tag inside "ui.html" which has a
-// full browser environment (see documentation).
-
-// This shows the HTML page in "ui.html".
 figma.showUI(__html__);
 
 const choices = seachForTitles();
 figma.ui.postMessage({type: "choices", choices, userName: figma.currentUser.name})
 
-// Calls to "parent.postMessage" from within the HTML page will trigger this
-// callback. The callback will be passed the "pluginMessage" property of the
-// posted message.
 figma.ui.onmessage = msg => {
   console.log(msg)
-  // One way of distinguishing between different types of messages sent from
-  // your HTML page is to use an object with a "type" property like this.
-  if (msg.action ==='check') {
-    console.log(seachForTitles())
-  }
 
   if (msg.action ==='select') {
     console.log("id", msg.title)
@@ -31,13 +15,18 @@ figma.ui.onmessage = msg => {
   figma.closePlugin();
 };
 
-function seachForTitles(): {characters: string, id: number}[] {
-  let i =0;
-  const choices: {characters: string, id: number}[] = [];
-  for (let textNode of figma.currentPage.findAll(node => node.type === 'TEXT')) {
-    let characters: string = textNode["characters"].toLowerCase()
-    choices.push({characters, id: i});
-    i++;
+function seachForTitles(): string[] {
+  const choices: string[] = [];
+  let bannerNodes: InstanceNode[] = figma.currentPage.selection as InstanceNode[];
+  for (let bannerNode of bannerNodes) {
+    if (bannerNode?.children){
+      for (let textNode of bannerNode?.children) {
+        if (textNode.name === 'Nom de la feature') {
+          let characters: string = textNode["characters"];
+          choices.push(characters);
+        }
+     }
+    }
   }
   return choices;
 }
