@@ -3,12 +3,6 @@ figma.showUI(__html__);
 seachForTitles();
 
 figma.ui.onmessage = msg => {
-  console.log(msg)
-
-  if (msg.action ==='select') {
-    console.log("id", msg.title)
-  }
-
   // Make sure to close the plugin when you're done. Otherwise the plugin will
   // keep running, which shows the cancel button at the bottom of the screen.
   figma.closePlugin();
@@ -31,7 +25,7 @@ async function seachForTitles(): Promise<void> {
         choices.push(characters);
       }
       if (textNode.name === 'Nom le jj Mois') {
-        await figma.loadFontAsync({ family: "Open Sans", style: "Bold" });
+        await figma.loadFontAsync({ family: "Open Sans", style: "Bold" }); // For some reason Figma wants to load the font before using it
         await figma.loadFontAsync({ family: "Open Sans", style: "Regular" });
         textNode["characters"] = `Mis à jour par ${userName} le ${date}`;
       }

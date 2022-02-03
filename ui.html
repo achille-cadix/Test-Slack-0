@@ -9,11 +9,11 @@
   onmessage = event => {
     if (event.data.pluginMessage.type === "choices") {
       choices = event.data.pluginMessage.choices;
+      userName = event.data.pluginMessage.userName;
       if (choices.length === 1) {
         selectChoice(choices[0]);
         parent.closePlugin();
       }
-      userName = event.data.pluginMessage.userName;
       updateUi()
     }
   }
